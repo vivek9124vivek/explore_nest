@@ -1,9 +1,9 @@
-import { LazyModuleLoader, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NextFunction } from 'express';
-import { UserModule } from './user/user.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-var visits=0;
+let visits=0;
 function globalMiddleware(req: Request, res: Response, next: NextFunction){
   
   visits+=1;
@@ -13,12 +13,18 @@ function globalMiddleware(req: Request, res: Response, next: NextFunction){
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const lazyModuleLoader = app.get(LazyModuleLoader);
-  const abc= await this.lazyModuleLoader.load(()=>
-  UserModule
-  )
-  
+//swagger builder implements
+const config = new DocumentBuilder()
+.setTitle('Books example')
+.setDescription('The books API description')
+.setVersion('1.0')
+.addTag('books')
+.build();
+
+const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   app.use(globalMiddleware)
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();

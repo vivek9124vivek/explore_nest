@@ -1,0 +1,74 @@
+# version: '3'
+# services:
+#   db:
+#     image: postgres
+#     restart: always
+#     volumes:
+#       - ./data/db:/var/lib/postgresql/data
+#     ports:
+#       - 5432:5432  # make sure you don't have another container running on 5432
+
+#     environment:
+#       - POSTGRES_DB=learningDB
+#       - POSTGRES_USER=vivek_kumar
+#       - POSTGRES_PASSWORD=Vv#18067036
+
+#   adminer:
+#     image: adminer
+#     restart: always
+#     ports:
+#       - 8080:8080
+
+      # string for db connection is below
+      # postgresql://vivek_kumar:Vv#18067036@localhost:5432/learningDB
+
+
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs_app
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_USER=vivek_kumar
+      - DATABASE_PASSWORD=Vv#18067036
+      - DATABASE_NAME=learningDB
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    command: npm run start:dev
+
+  db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: learningDB
+      POSTGRES_USER: vivek_kumar
+      POSTGRES_PASSWORD: Vv#18067036
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8181:8080"

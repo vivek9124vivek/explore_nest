@@ -2,7 +2,8 @@
 /dist
 /node_modules
 /build
-
+/data
+/src/db
 # Logs
 logs
 *.log
