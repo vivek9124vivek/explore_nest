@@ -1,0 +1,50 @@
+.inputs{
+    display: flex;
+    justify-content: center;
+    padding: 40px 0 10px 0;
+    gap: 10px;
+}
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  
+  .table {
+    width: 100%; /* Adjust as needed */
+    max-width: 800px; /* Set a maximum width for better control */
+    margin: 100px auto; /* Center the table horizontally */
+  }
+
+  .book_info{
+    background: #FFDFD6;
+    padding: 10px;
+    
+  }
+  .book_info h2{
+    color: #2E236C;
+    margin-bottom: 7px;
+    
+  }
+  .book_info p{
+    color: #000;
+  }
+
+  .buttons{
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .all_book{
+    position: relative;
+    left: 45%;
+    top: 30px;
+  }
+
+  .add_book{
+    text-align: center;
+    margin-top: 40px;
+    color: #00308F;
+  }
+  
