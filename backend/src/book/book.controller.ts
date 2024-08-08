@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param,  ParseIntPipe,  Patch, Post,  UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param,  ParseIntPipe,  Patch, Post,  Query,  UseInterceptors, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CreateBookDto } from "./dto/create-book.dto";
 import { BookService } from "./book.service";
 import { UpdateBookDto } from "./dto/update-book.dto";
@@ -36,6 +36,11 @@ export class BookController{
       status:201,
       description:"Record created successfully"
     })
+    @UsePipes(new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }))
     create(@Body() createBookDto: CreateBookDto){
       return this.bookService.create(createBookDto);
     }
@@ -51,8 +56,24 @@ export class BookController{
       status:500,
       description:'Internal Server Error'
     })
-    findAll(){
-      return this.bookService.findAll()
+    findAll(
+      @Query('page') page: string = '1',
+      @Query('limit') limit: string = '3',
+    ){
+      {
+        console.log(`Received page: '${page}', limit: '${limit}'`);
+
+        const pageNumber = parseInt(page, 10);
+        const limitNumber = parseInt(limit, 10);
+    
+        console.log(`Parsed page: ${pageNumber}, limit: ${limitNumber}`);
+    
+        if (isNaN(pageNumber) || isNaN(limitNumber) || pageNumber < 1 || limitNumber < 1) {
+          throw new BadRequestException('Page and limit must be positive numbers');
+        }
+    
+        return this.bookService.findAll(pageNumber, limitNumber);
+      }
     }
   //update book with the help of id
      @Patch(':id')

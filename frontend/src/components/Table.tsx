@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditSharpIcon from '@mui/icons-material/EditSharp';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 interface Rating {
   id: number;
   Rating: number;
@@ -19,12 +19,19 @@ interface Author{
   id: number;
   name:string;
 }
+interface Publication{
+  id:number;
+  publication:string;
+  publishedAt:Date;
+}
 
 interface Book {
   id: number;
   name: string;
+  image:string;
   rating: Rating;
   author:Author; 
+  publication:Publication
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -50,8 +57,10 @@ function CustomizedTables() {
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
+  const navigate = useNavigate();
+  
   useEffect(() => {
-    fetch('http://localhost:4000/book', { 
+    fetch('http://localhost:4000/book', {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -59,9 +68,13 @@ function CustomizedTables() {
       },
     })
       .then((response) => response.json())
-      .then((data) => setBooks(data))
+      .then((data) => {
+        setBooks(data);
+        console.log(data); // Log the fetched books data
+      })
       .catch((error) => console.error('Error:', error));
   }, []);
+
 
   const handleRowClick = (bookId: number) => {
     fetch(`http://localhost:4000/book/${bookId}`, {
@@ -78,9 +91,8 @@ function CustomizedTables() {
         return response.json();
       })
       .then((data) => {
-        console.log(data); // Log data to the console
-        setSelectedBook(data); // Set data in state
-       
+        console.log(data); 
+        setSelectedBook(data); 
       })
       .catch((error) => console.error('Error:', error));
   };
@@ -99,11 +111,12 @@ const handleDelete = (bookId: number) => {
       if (!response.ok) {
         throw new Error(`Error deleting book: ${response.statusText}`);
       }
-      return response.json(); // If your server returns a JSON response
+      return response.json(); 
     })
     .then((data) => {
       console.log('Book deleted successfully:', data);
-      // Handle successful deletion here
+      console.log('Navigating to /all_books');
+      navigate('/all_books');
       
     })
     .catch((error) => {
@@ -127,7 +140,7 @@ const handleUpdate = (bookId: number)=>{
       return response.json(); // If your server returns a JSON response
     })
     .then((data) => {
-      console.log('Book deleted successfully:', data);
+      console.log('Book updated successfully:', data);
       // Handle successful deletion here
       
     })

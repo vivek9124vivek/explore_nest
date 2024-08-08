@@ -1,14 +1,19 @@
 import { TextField } from '@mui/material'
 import Button from '@mui/material/Button';
 import { useState } from 'react';
-
+import { useAuth0 } from "@auth0/auth0-react";
 import '../App.css'
 
 import { Link, useNavigate } from 'react-router-dom';
+import BookCard from './BookCard';
+
 
 const Home = () => {
     
   const navigate= useNavigate();
+
+  const { user, loginWithRedirect } = useAuth0();
+  console.log('user:', user)
     
 
     const [values,setValues] = useState({
@@ -39,7 +44,7 @@ const Home = () => {
 
           const data = await response.json();
           console.log('Success:', data);
-          navigate('/');
+          navigate('/all_books');
           // Handle success, perhaps show a success message or redirect
       } catch (error) {
           console.error('Error:', error);
@@ -53,8 +58,8 @@ const Home = () => {
 
   return (
 
-    <>
-<h1 className='add_book'>Add Book Details</h1>
+    <div className='home'>
+{/* <h1 className='add_book'>Add Book Details</h1>
    <form onSubmit={handleSubmit}>
     <div className='inputs'>
 
@@ -89,9 +94,13 @@ const Home = () => {
   <Link to='/all_books'>
   
     <Button variant="contained" className='all_book'>All Books</Button>
-  </Link>
+  </Link> */}
+  <div className='bookcard_grid'>
 
-    </>
+  <BookCard />
+  </div>
+  
+    </div>
   )
 }
 

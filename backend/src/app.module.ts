@@ -12,6 +12,8 @@ import { RedisModule } from 'redis/redis.module';
 import { Rating } from './book/entities/rating.entity';
 import { ConfigModule } from '@nestjs/config';
 import { Author } from './book/entities/author.entity';
+import { Publication } from './book/entities/publication.entity';
+
 
 
 @Module({
@@ -40,7 +42,7 @@ import { Author } from './book/entities/author.entity';
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    entities: [Book,Rating,Author],
+    entities: [Book,Rating,Author,Publication],
     port: 5433,
    
     synchronize: true,

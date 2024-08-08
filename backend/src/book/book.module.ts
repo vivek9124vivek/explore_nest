@@ -7,11 +7,13 @@ import { Book } from "./entities/book.entity";
 import { BookService } from "./book.service";
 import { Rating } from "./entities/rating.entity";
 import { Author } from "./entities/author.entity";
+import { Publication } from "./entities/publication.entity";
+// import { Publication } from "./entities/publication.entitiy";
 
 
 
 @Module({
-    imports:[forwardRef(()=> CatsModule),TypeOrmModule.forFeature([Book,Rating,Author])],
+    imports:[forwardRef(()=> CatsModule),TypeOrmModule.forFeature([Book,Rating,Author,Publication])],
     controllers:[BookController],
     providers: [BookService],
 })

@@ -12,13 +12,13 @@ export class BookInterceptor implements NestInterceptor{
         console.log(`Request body: ${JSON.stringify(request.body)}`);
 
         // Modify request body
-        if (!request.body.name) {
-            request.body.name = 'Default Book Name';
-        }
+        // if (!request.body.name) {
+        //     request.body.name = 'Default Book Name';
+        // }
 
-        if (!request.body.author) {
-            request.body.author = 'Default Author Name';
-        }
+        // if (!request.body.author) {
+        //     request.body.author = 'Default Author Name';
+        // }
 
         // Continue to the next handler
         return next.handle();
